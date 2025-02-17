@@ -1,0 +1,2 @@
+# checkout-tests
+Testes automatizados
