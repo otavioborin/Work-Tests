@@ -1,9 +1,11 @@
-const buyerName = "Teste Nome";
-const buyerEmail = "otavio.borin+teste1@kiwify.com.br";
+describe('Custom Checkout', () => {
+  const buyerName = Cypress.env('buyerName')
+  const buyerEmail = Cypress.env('buyerEmail')
 
-describe('Automação - USD', () => {
-  it('Realiza o pagamento', () => {
-    cy.visit('https://pay-dev.kiwify.com.br/Mbf14rC');
+  it('performs payment', () => {
+    const localUrl = Cypress.env('paymentUrl')
+    cy.visit(`${localUrl}/bqPBIVx`)
+    
     cy.get('button[id="country-selector__toggle"]').should('be.visible').click();
     cy.contains('United States').should('be.visible').click();
     cy.get('input[name="fullname"]').type(buyerName);
@@ -16,7 +18,7 @@ describe('Automação - USD', () => {
     cy.get('select[name="ccyear_1"]').select('2030', { force: true })
     cy.get('input[kiwi-data="cccv"').type('737', { force: true })
     cy.get('a[kiwi-data="pay_button"]').click()
-    cy.contains('Payment Approved!', { timeout: 60000 }).should('be.visible')
+    cy.contains('has been approved!', { timeout: 60000 }).should('be.visible')
 
   });
 

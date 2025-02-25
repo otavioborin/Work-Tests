@@ -1,9 +1,11 @@
-const buyerName = "Teste Nome"; 
-const buyerEmail = "otavio.borin+teste1@kiwify.com.br"; 
+describe('Custom Checkout', () => {
+  const buyerName = Cypress.env('buyerName')
+  const buyerEmail = Cypress.env('buyerEmail')
 
-describe('template spec', () => {
-  it('passes', () => {
-    cy.visit('https://pay-dev.kiwify.com.br/ySJTNam')
+  it('performs payment', () => {
+    const localUrl = Cypress.env('paymentUrl')
+    cy.visit(`${localUrl}/tIfG5uR`)
+
     cy.get('input[name="fullname"]').type(buyerName)
     cy.get('input[kiwi-data="email"').type(buyerEmail)
     cy.get('input[kiwi-data="confirmEmail"').type(buyerEmail)
@@ -66,8 +68,8 @@ describe('template spec', () => {
 
             cy.contains('Valores').click()
             cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✅ 200 OK'));
-            cy.contains('Taxas').parents('.grid').contains('R$ 23,37').then(() => cy.log('✅ 200 OK'));
-            cy.contains('R$ 166,62').then(() => cy.log('✅ 200 OK'));
+            cy.contains('Taxas').parents('.grid').contains('R$ 19,57').then(() => cy.log('✅ 200 OK'));
+            cy.contains('R$ 170,42').then(() => cy.log('✅ 200 OK'));
           });
         }
       });

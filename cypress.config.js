@@ -1,15 +1,42 @@
-const { defineConfig } = require("cypress");
+import { defineConfig } from 'cypress'
 
-module.exports = defineConfig({
+const generateRandomString = () => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const length = Math.floor(Math.random() * 5) + 5 // Random length between 5-10
+  let result = ''
+
+  // Generate first part
+  for(let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+
+  // Add space
+  result += ' '
+
+  // Generate second part
+  for(let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+
+  return result
+}
+
+export default defineConfig({
   e2e: {
-    chromeWebSecurity: false, // Desativa restrições CORS
-    experimentalSessionAndOrigin: true, // Permite testes em múltiplas origens
     setupNodeEvents(on, config) {
-      // Definir variáveis de ambiente dentro do Cypress
-      config.env.external_id = "pyqipsEsnJbnLj6hjQy0a4OgKUT2";
-      config.env.device_token = "hgVHCUbUy7tM1c9BiiU3D9Gq1Osj9zeNeiVjQb7t0OdoFXN7g2VshE3oHTrZrXFoFfAJPhWSX5M8a6sxRNrmWQnKrSp7RraMRgPc";
+      // keep this as the dashboard url, as we need to authenticate and check the sales after the payment
+      config.baseUrl = 'https://dashboard-dev-kiwify.netlify.app'
+      config.env.buyerName = generateRandomString()
+      config.env.buyerEmail = `${config.env.buyerName.split(' ')[0]}@test.com`
+      config.env.paymentUrl = process.env.PAYMENT_URL || 'https://pay-dev.kiwify.com.br'
+      config.env.externalId = 'BZBWtCLpw3YlbzLyRfVwUtbaIzM2' // ✅ Chave "externalId"
+      config.env.deviceToken = 'zKQNrFELWXic6QuBrfsrOwmW4vMEHsFls5UgWKorQvsmhAOdzCbokCKYziNd7aG4TYJUeC18GV7CVbsmvAmQRyvxDxVlkSrdC2ve'
 
-      return config;
+      // Definição das variáveis de ambiente para login
+      config.env.email = 'product.testing@kiwify.com.br'
+      config.env.password = '91939123Oab!'
+
+      return config
     },
     defaultCommandTimeout: 10000,
     pageLoadTimeout: 30000,
@@ -17,6 +44,6 @@ module.exports = defineConfig({
     responseTimeout: 30000,
     retries: 2,
     supportFile: 'cypress/support/e2e.js',
-    specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
-  },
-});
+    specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}'
+  }
+})

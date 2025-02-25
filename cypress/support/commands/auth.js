@@ -1,15 +1,19 @@
 Cypress.Commands.add('setupDeviceToken', () => {
-  const externalId = Cypress.env('pyqipsEsnJbnLj6hjQy0a4OgKUT2')
-  const deviceToken = Cypress.env('hgVHCUbUy7tM1c9BiiU3D9Gq1Osj9zeNeiVjQb7t0OdoFXN7g2VshE3oHTrZrXFoFfAJPhWSX5M8a6sxRNrmWQnKrSp7RraMRgPc')
+  const externalId = Cypress.env('externalId') // ✅
+  const deviceToken = Cypress.env('deviceToken') // ✅
   window.localStorage.setItem(`kiwi_device_token_${externalId}`, deviceToken)
 })
 
 Cypress.Commands.add('ensureAuthenticated', () => {
+  // Configura o token ANTES de limpar o storage (se necessário)
+  cy.setupDeviceToken() // ✅ Primeiro configuramos o token
+  
+  // Limpa os storages (avaliar se realmente necessário)
   cy.clearAllCookies().clearAllLocalStorage().clearAllSessionStorage()
-
-  // Setup device token before visiting the page. This helps us skip 2fa
-  cy.setupDeviceToken()
-
+  
+  // Reaplica o token após limpeza (caso a limpeza seja necessária)
+  cy.setupDeviceToken() // ✅ Garantir que o token persista
+  
   cy.visit('https://dashboard-dev-kiwify.netlify.app/login')
   cy.reload()
 
@@ -28,8 +32,9 @@ Cypress.Commands.add('ensureAuthenticated', () => {
         cy.url().then((url) => {
           if (url.includes('/login')) {
             // On login page, authenticate
-            cy.get('input[id="email"]').type('otavio.borin@kiwify.com.br')
-            cy.get('input[id="password"]').type('91939123Oab!')
+            cy.get('input[id="email"]', { timeout: 10000 }).type(Cypress.env('email'))
+            cy.get('input[id="password"]', { timeout: 10000 }).type(Cypress.env('password'))
+            
             cy.get('button').click()
 
             cy.url().should('not.include', '/login')

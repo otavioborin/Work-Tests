@@ -1,9 +1,11 @@
-const buyerName = "Teste Nome";
-const buyerEmail = "otavio.borin+teste1@kiwify.com.br";
+describe('Custom Checkout', () => {
+  const buyerName = Cypress.env('buyerName')
+  const buyerEmail = Cypress.env('buyerEmail')
 
-describe('Automação - USD', () => {
-  it('Realiza o pagamento', () => {
-    cy.visit('https://pay-dev.kiwify.com.br/Mbf14rC');
+  it('performs payment', () => {
+    const localUrl = Cypress.env('paymentUrl')
+    cy.visit(`${localUrl}/bqPBIVx`)
+
     cy.get('button[id="country-selector__toggle"]').should('be.visible').click();
     cy.contains('United States').should('be.visible').click();
     cy.get('input[name="fullname"]').type(buyerName);
@@ -18,7 +20,7 @@ describe('Automação - USD', () => {
     cy.get('button[type="button"]').eq(0).click()
     cy.get('input[name="coupon"]').type('CUPOM10').wait(2000)
     cy.get('a[kiwi-data="pay_button"]').click()
-    cy.contains('Payment Approved!', { timeout: 60000 }).should('be.visible')
+    cy.contains('has been approved!', { timeout: 60000 }).should('be.visible')
 
   });
 
@@ -48,6 +50,7 @@ describe('Automação - USD', () => {
     })
 
     cy.contains('Valores').click()
+    cy.contains('cupom de desconto aplicado').then(() => cy.log('✅ Cupom aplicado'))
     cy.contains('Preço do produto').parents('.grid').contains('$29.69').then(() => cy.log('✅ 200 OK'));
     cy.contains('Imposto da venda').parents('.grid').contains('$1.97').then(() => cy.log('✅ 200 OK'));
     cy.contains('Taxas').parents('.grid').contains('$3.77 USD').then(() => cy.log('✅ 200 OK'));

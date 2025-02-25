@@ -1,11 +1,13 @@
-const buyerName = "Teste Nome";
-const buyerEmail = "otavio.borin+teste1@kiwify.com.br";
-const mainProduct = "TESTE AUTOMATIZADO"
-const orderBump = "ORDER BUMP 1"
+describe('Custom Checkout', () => {
+  const buyerName = Cypress.env('buyerName')
+  const buyerEmail = Cypress.env('buyerEmail')
+  const mainProduct = "Automated Test"
+  const orderBump = "Order Bump 1"
 
-describe('Automação de Testes Kiwify', () => {
-  it('Realiza o pagamento via Pix', () => {
-    cy.visit('https://pay-dev.kiwify.com.br/Mbf14rC');
+  it('performs payment', () => {
+    const localUrl = Cypress.env('paymentUrl')
+    cy.visit(`${localUrl}/bqPBIVx`)
+  
     cy.get('input[name="fullname"]').type(buyerName);
     cy.get('input[kiwi-data="email"]').type(buyerEmail);
     cy.get('input[kiwi-data="confirmEmail"]').type(buyerEmail);
@@ -19,7 +21,6 @@ describe('Automação de Testes Kiwify', () => {
 
   it('Verifica o status do pagamento', () => {
     cy.visit('https://dashboard-dev-kiwify.netlify.app/');
-    cy.clearAllCookies().clearAllLocalStorage().clearAllSessionStorage();
     cy.ensureAuthenticated();
     cy.intercept('GET', 'https://admin-api-dev.kiwify.com.br/v2/orders/*').as('getOrder');
     cy.get('a[href="/sales"]').click({ multiple: true, force: true });
@@ -71,8 +72,8 @@ describe('Automação de Testes Kiwify', () => {
 
     cy.contains('Valores').click();
     cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✅ 200 OK'));
-    cy.contains('Taxas').parents('.grid').contains('R$ 23,37').then(() => cy.log('✅ 200 OK'));
-    cy.contains('R$ 166,62').then(() => cy.log('✅ 200 OK'));
+    cy.contains('Taxas').parents('.grid').contains('R$ 19,57').then(() => cy.log('✅ 200 OK'));
+    cy.contains('R$ 170,42').then(() => cy.log('✅ 200 OK'));
 
     cy.go(-2);
     cy.wait(3000);

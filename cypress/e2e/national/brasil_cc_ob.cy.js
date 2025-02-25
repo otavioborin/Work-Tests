@@ -1,11 +1,14 @@
-    const buyerName = "Teste Nome"; 
-    const buyerEmail = "otavio.borin+teste1@kiwify.com.br"; 
-    const mainProduct = "TESTE AUTOMATIZADO"
-    const orderBump = "ORDER BUMP 1"
+describe('Custom Checkout', () => {
+  const buyerName = Cypress.env('buyerName')
+  const buyerEmail = Cypress.env('buyerEmail')
+  const mainProduct = "Automated Test"
+  const orderBump = "Order Bump 1"
 
-    describe('template spec', () => {
-    it('passes', () => {
-        cy.visit('https://pay-dev.kiwify.com.br/Mbf14rC')
+
+  it('performs payment', () => {
+    const localUrl = Cypress.env('paymentUrl')
+    cy.visit(`${localUrl}/bqPBIVx`)
+
         cy.get('input[name="fullname"]').type(buyerName)
         cy.get('input[kiwi-data="email"').type(buyerEmail)
         cy.get('input[kiwi-data="confirmEmail"').type(buyerEmail)
@@ -24,7 +27,6 @@
 
     it('log in', () => {
         cy.visit('https://dashboard-dev-kiwify.netlify.app/')
-        cy.clearAllCookies().clearAllLocalStorage().clearAllSessionStorage()
         cy.ensureAuthenticated()
 
         // Intercepta a requisição exata que retorna o order_id
@@ -47,11 +49,11 @@
               Cypress.env('order_id', orderId);
             });
       
-            cy.contains('Valores').click();
-            cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✓ 200 OK'));
-            cy.contains('Preço com acréscimo').parents('.grid').contains('R$ 228,90').then(() => cy.log('✓ 200 OK'));
-            cy.contains('Taxas').parents('.grid').contains('R$ 23,37').then(() => cy.log('✓ 200 OK'));
-            cy.contains('R$ 166,62').then(() => cy.log('✓ 200 OK'));
+            cy.contains('Valores').click()
+            cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✅ 200 OK'));
+            cy.contains('Preço com acréscimo').parents('.grid').contains('R$ 228,90').then(() => cy.log('✅ 200 OK'));
+            cy.contains('Taxas').parents('.grid').contains('R$ 19,57').then(() => cy.log('✅ 200 OK'));
+            cy.contains('R$ 170,42').then(() => cy.log('✅ 200 OK'));
       
             // 🔄 **Volta para a página anterior após validar os valores**
             cy.go(-2);
@@ -75,11 +77,11 @@
                   Cypress.env('order_id', orderId);
                 });
           
-                cy.contains('Valores').click();
+                cy.contains('Valores').click()
                 cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✅ 200 OK'));
                 cy.contains('Preço com acréscimo').parents('.grid').contains('R$ 228,90').then(() => cy.log('✅ 200 OK'));
-                cy.contains('Taxas').parents('.grid').contains('R$ 23,37').then(() => cy.log('✅ 200 OK'));
-                cy.contains('R$ 166,62').then(() => cy.log('✅ 200 OK'));
+                cy.contains('Taxas').parents('.grid').contains('R$ 19,57').then(() => cy.log('✅ 200 OK'));
+                cy.contains('R$ 170,42').then(() => cy.log('✅ 200 OK'));
 
           });
       

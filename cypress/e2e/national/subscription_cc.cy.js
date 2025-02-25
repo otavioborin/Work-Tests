@@ -1,9 +1,11 @@
-const buyerName = "Teste Nome"; 
-const buyerEmail = "otavio.borin+teste1@kiwify.com.br"; 
+describe('Custom Checkout', () => {
+  const buyerName = Cypress.env('buyerName')
+  const buyerEmail = Cypress.env('buyerEmail')
 
-describe('template spec', () => {
-  it('passes', () => {
-    cy.visit('https://pay-dev.kiwify.com.br/JH09QLp')
+  it('performs payment', () => {
+    const localUrl = Cypress.env('paymentUrl')
+    cy.visit(`${localUrl}/vAR7XDs`)
+
     cy.get('input[name="fullname"]').type(buyerName)
     cy.get('input[kiwi-data="email"').type(buyerEmail)
     cy.get('input[kiwi-data="confirmEmail"').type(buyerEmail)
