@@ -17,7 +17,7 @@ describe('Custom Checkout', () => {
     cy.get('input[kiwi-data="cccv"').type('123', { force: true })
     cy.get('#saveDetails').click()
     cy.get('a[kiwi-data="pay_button"]').click()
-    cy.contains('Pagamento Aprovado!', { timeout: 60000 }).should('be.visible')
+    cy.contains('foi aprovada!', { timeout: 60000 }).should('be.visible')
   })
 
   it('log in', () => {
@@ -44,8 +44,8 @@ describe('Custom Checkout', () => {
 
     cy.contains('Valores').click()
     cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✅ 200 OK'));
-    cy.contains('Taxas').parents('.grid').contains('R$ 23,37').then(() => cy.log('✅ 200 OK'));
-    cy.contains('R$ 166,62').then(() => cy.log('✅ 200 OK'));
+    cy.contains('Taxas').parents('.grid').contains('R$ 19,57').then(() => cy.log('✅ 200 OK'));
+    cy.contains('R$ 170,42').then(() => cy.log('✅ 200 OK'));
     
   })
 })
