@@ -22,7 +22,7 @@ describe('Custom Checkout', () => {
 
   });
 
-  it('Verifica o status da dashboard', () => {
+  it('log in', () => {
     cy.visit('https://dashboard-dev-kiwify.netlify.app/')
     cy.clearAllCookies().clearAllLocalStorage().clearAllSessionStorage()
     cy.ensureAuthenticated()

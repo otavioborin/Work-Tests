@@ -37,7 +37,7 @@ describe('Custom Checkout', () => {
       if (!orderId) {
         throw new Error("❌ order_id não encontrado na resposta da API")
       }
-      cy.log(`✅ Order ID capturado: ${orderId}`)
+      cy.log(`📦 Order ID: ${orderId}`)
       cy.wrap(orderId).as('orderId')
       Cypress.env('order_id', orderId)
     })

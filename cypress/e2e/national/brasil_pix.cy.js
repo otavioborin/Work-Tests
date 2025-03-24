@@ -16,7 +16,7 @@ describe('Custom Checkout', () => {
     cy.contains('Pedido gerado! Agora finalize o pagamento', { timeout: 60000 }).should('be.visible');
   });
 
-  it('Verifica o status do pagamento', () => {
+  it('log in', () => {
     cy.visit('https://dashboard-dev-kiwify.netlify.app/');
     cy.ensureAuthenticated();
     cy.intercept('GET', 'https://admin-api-dev.kiwify.com.br/v2/orders/*').as('getOrder');
