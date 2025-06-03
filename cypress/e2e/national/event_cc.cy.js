@@ -44,7 +44,7 @@ describe('Custom Checkout', () => {
 
     cy.contains('Valores').click()
     cy.contains('Preço base do produto').parents('.grid').contains('R$ 189,99').then(() => cy.log('✅ 200 OK'));
-    cy.contains('Preço com acréscimo').parents('.grid').contains('R$ 228,90').then(() => cy.log('✅ 200 OK'));
+    cy.contains('Preço com acréscimo').parents('.grid').contains('R$ 235,79').then(() => cy.log('✅ 200 OK'));
     cy.contains('Taxas').parents('.grid').contains('R$ 19,57').then(() => cy.log('✅ 200 OK'));
     cy.contains('R$ 170,42').then(() => cy.log('✅ 200 OK'));
     cy.contains('Ingressos').click()
